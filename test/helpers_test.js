@@ -11,7 +11,7 @@ describe('helpers', () => {
 
     it('it returns the hostname if there are not more than two path segments', () => {
       var domain = defaultDomain('example.io');
-      assert.equal(domain, 'example.io');
+      assert.equal(domain, '.example.io');
     });
   });
 

@@ -1,6 +1,6 @@
 export function defaultDomain(hostname) {
   var hostArray = hostname.split('.');
-  return hostArray.length > 2 ? `.${hostArray.slice(1).join('.')}` : hostname;
+  return hostArray.length > 2 ? `.${hostArray.slice(1).join('.')}` : `.${hostname}`;
 }
 
 export function daysAfterToday(days) {
