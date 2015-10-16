@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/signalerjs.svg)](http://badge.fury.io/js/signalerjs)
-[![Build Status](https://secure.travis-ci.org/jdlehman/signalerjs.svg?branch=master)](http://travis-ci.org/jdlehman/signalerjs)
-[![Dependency Status](https://david-dm.org/jdlehman/signalerjs.svg)](https://david-dm.org/jdlehman/signalerjs)
+[![Build Status](https://secure.travis-ci.org/customink/signalerjs.svg?branch=master)](http://travis-ci.org/customink/signalerjs)
+[![Dependency Status](https://david-dm.org/customink/signalerjs.svg)](https://david-dm.org/customink/signalerjs)
 
 # Signalerjs
 
