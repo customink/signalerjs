@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/signalerjs.svg)](http://badge.fury.io/js/signalerjs)
+[![Build Status](https://secure.travis-ci.org/jdlehman/signalerjs.svg?branch=master)](http://travis-ci.org/jdlehman/signalerjs)
+[![Dependency Status](https://david-dm.org/jdlehman/signalerjs.svg)](https://david-dm.org/jdlehman/signalerjs)
+
 # Signalerjs
 
 `Signalerjs` is an [AB testing](https://en.wikipedia.org/wiki/A/B_testing) library. It provides a JavaScript interface to sample users into test groups and specify different logic depending on the test group in which a user has been placed. We will refer to each test as a "feature" and the different test groups per "feature" as "feature flags" (hence the name "Signaler").
