@@ -1,41 +1,41 @@
-# Signalmanjs
+# Signalerjs
 
-`Signalmanjs` is an [AB testing](https://en.wikipedia.org/wiki/A/B_testing) library. It provides a JavaScript interface to sample users into test groups and specify different logic depending on the test group in which a user has been placed. We will refer to each test as a "feature" and the different test groups per "feature" as "feature flags" (hence the name "Signalman").
+`Signalerjs` is an [AB testing](https://en.wikipedia.org/wiki/A/B_testing) library. It provides a JavaScript interface to sample users into test groups and specify different logic depending on the test group in which a user has been placed. We will refer to each test as a "feature" and the different test groups per "feature" as "feature flags" (hence the name "Signaler").
 
 ## Installation
 
-- `npm install signalmanjs`
+- `npm install signalerjs`
 
 ## Setup
 
 ```js
 // es6
-import Signalman from 'signalmanjs';
+import Signaler from 'signalerjs';
 
 // es5 with modules
-var Signalman = require('signalmanjs');
+var Signaler = require('signalerjs');
 
 // es5 without modules
-// add script tag from node_modules/signalmanjs/dist/signalman.min.js
-var Signalman = window.signalmanjs;
+// add script tag from node_modules/signalerjs/dist/signalerjs.min.js
+var Signaler = window.signalerjs;
 ```
 
 ## Configuration
 
-`Signalmanjs` can get feature flag information from a server endpoint or from a JavaScript object on initialization.
+`Signalerjs` can get feature flag information from a server endpoint or from a JavaScript object on initialization.
 
 ### With Server
 
-`Signalmanjs` can work in conjunction with a server endpoint that provides JSON data about the features. In this case, the endpoint url needs to be specified in the constructor. [Server endpoint requirements](docs/server_requirements.md).
+`Signalerjs` can work in conjunction with a server endpoint that provides JSON data about the features. In this case, the endpoint url needs to be specified in the constructor. [Server endpoint requirements](docs/server_requirements.md).
 
 ```js
 var serverEndpoint = '/features';
-var sm = new Signalman(serverEndpoint);
+var signal = new Signaler(serverEndpoint);
 ```
 
 ### Without Server
 
-`Signalmanjs` can also work entirely on the client-side without the need for a server. In this case the features with their possible flags are specified as an object in the constructor. See [feature definition docs](docs/feature_definition.md);
+`Signalerjs` can also work entirely on the client-side without the need for a server. In this case the features with their possible flags are specified as an object in the constructor. See [feature definition docs](docs/feature_definition.md);
 
 ```js
 var features = {
@@ -55,7 +55,7 @@ var features = {
     }
   }
 };
-var sm = new Signalman(features);
+var signal = new Signaler(features);
 ```
 
 ### Other Config
@@ -68,7 +68,7 @@ See full [API docs](docs/api.md).
 
 ```js
 // get feature flags user is opted into
-sm.featureFlags().then(function(flags) {
+signal.featureFlags().then(function(flags) {
 // flags =>
 // {
 //   flagOne: 'test',
@@ -80,7 +80,7 @@ sm.featureFlags().then(function(flags) {
 });
 
 // read flag value for given feature
-sm.featureFlag('flagOne').then(function(flag) {
+signal.featureFlag('flagOne').then(function(flag) {
 // flag => 'test'
 });
 ```
@@ -88,7 +88,7 @@ sm.featureFlag('flagOne').then(function(flag) {
 ## Example AB Test Usage
 
 ```js
-sm.featureFlag('flagOne').then(function(flag) {
+signal.featureFlag('flagOne').then(function(flag) {
   if (flag === 'test') {
     // custom logic if user has 'test' flag for feature 'flagOne'
   else if (flag === 'control') {

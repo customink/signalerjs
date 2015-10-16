@@ -4,9 +4,9 @@ import {Promise} from 'es6-promise';
 import axios from 'axios';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
-import Signalman from 'src';
+import Signaler from 'src';
 
-describe('Signalman (server backed)', () => {
+describe('Signaler (server backed)', () => {
   beforeEach(() => {
     Cookies.set(md5('featureOne'), 'control');
     Cookies.set(md5('featureTwo'), 'test');
@@ -21,16 +21,16 @@ describe('Signalman (server backed)', () => {
 
   describe('setup', () => {
     it('sets url', () => {
-      var sm = new Signalman('myUrl');
-      assert.isFunction(sm.featureFlags);
-      assert.isFunction(sm.featureFlag);
-      assert.isFunction(sm.setFeatureFlag);
+      var signal = new Signaler('myUrl');
+      assert.isFunction(signal.featureFlags);
+      assert.isFunction(signal.featureFlag);
+      assert.isFunction(signal.setFeatureFlag);
     });
   });
 
   describe('featureFlags', () => {
     it('returns current cookie values of feature flags', (done) => {
-      var sm = new Signalman('myUrl');
+      var signal = new Signaler('myUrl');
       var axiosStub = sinon.stub(axios, 'get', function(url) {
         return new Promise((resolve, reject) => {
           resolve({
@@ -42,7 +42,7 @@ describe('Signalman (server backed)', () => {
           });
         });
       });
-      var flags = sm.featureFlags();
+      var flags = signal.featureFlags();
 
       setTimeout(() => {
         flags.then(data => {
@@ -63,9 +63,9 @@ describe('Signalman (server backed)', () => {
   describe('featureFlag', () => {
     describe('feature is stored in a cookie already', () => {
       it('returns the feature flag value', () => {
-        var sm = new Signalman('myUrl');
-        var flag = sm.featureFlag('featureOne');
-        var flag2 = sm.featureFlag('featureTwo');
+        var signal = new Signaler('myUrl');
+        var flag = signal.featureFlag('featureOne');
+        var flag2 = signal.featureFlag('featureTwo');
         Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
           assert.equal(flagData, 'control');
           assert.equal(flag2Data, 'test');
@@ -77,7 +77,7 @@ describe('Signalman (server backed)', () => {
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
         it('gets the flag value and sets it to a cookie', (done) => {
-          var sm = new Signalman('myUrl');
+          var signal = new Signaler('myUrl');
           var featureName = 'notSet';
           var flagValue = 'flagValue';
           var expiresValue = 'January 15, 2016';
@@ -91,7 +91,7 @@ describe('Signalman (server backed)', () => {
               });
             });
           });
-          var flag = sm.featureFlag(featureName);
+          var flag = signal.featureFlag(featureName);
 
           setTimeout(() => {
             flag.then(data => {
@@ -108,7 +108,7 @@ describe('Signalman (server backed)', () => {
 
       describe('response.expires is a number', () => {
         it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', (done) => {
-          var sm = new Signalman('myUrl');
+          var signal = new Signaler('myUrl');
           var featureName = 'notSet2';
           var flagValue = 'flagValue';
           var dateStub = sinon.stub(Date, 'now', () => {
@@ -124,7 +124,7 @@ describe('Signalman (server backed)', () => {
               });
             });
           });
-          var flag = sm.featureFlag(featureName);
+          var flag = signal.featureFlag(featureName);
 
           setTimeout(() => {
             flag.then(data => {
@@ -142,7 +142,7 @@ describe('Signalman (server backed)', () => {
 
       describe('response.expires is not defined', () => {
         it('gets the flag value and sets it to a cookie', (done) => {
-          var sm = new Signalman('myUrl');
+          var signal = new Signaler('myUrl');
           var featureName = 'notSet3';
           var flagValue = 'flagValue';
           var axiosStub = sinon.stub(axios, 'get', function(url) {
@@ -154,7 +154,7 @@ describe('Signalman (server backed)', () => {
               });
             });
           });
-          var flag = sm.featureFlag(featureName);
+          var flag = signal.featureFlag(featureName);
 
           setTimeout(() => {
             flag.then(data => {
@@ -173,11 +173,11 @@ describe('Signalman (server backed)', () => {
 
   describe('setFeatureFlag', () => {
     it('sets the cookie with the options passed in', () => {
-      var sm = new Signalman('myUrl');
+      var signal = new Signaler('myUrl');
       var featureName = 'newFeature';
       var featureVal = 'myVal';
       var cookieSpy = sinon.spy(Cookies, 'set');
-      sm.setFeatureFlag(featureName, featureVal);
+      signal.setFeatureFlag(featureName, featureVal);
       var cookieVal = Cookies.get(md5(featureName));
       sinon.assert.calledWith(cookieSpy, md5(featureName), featureVal, {});
       assert.equal(cookieVal, 'myVal');
@@ -185,7 +185,7 @@ describe('Signalman (server backed)', () => {
     });
 
     it('transforms cookie options', () => {
-      var sm = new Signalman('myUrl', {
+      var signal = new Signaler('myUrl', {
         transformCookieOptions: (obj) => {
           obj.path = '/secret';
           return obj;
@@ -194,7 +194,7 @@ describe('Signalman (server backed)', () => {
       var featureName = 'newFeature';
       var featureVal = 'myVal';
       var cookieSpy = sinon.spy(Cookies, 'set');
-      sm.setFeatureFlag(featureName, featureVal, {domain: 'domain'});
+      signal.setFeatureFlag(featureName, featureVal, {domain: 'domain'});
       var cookieVal = Cookies.get(md5(featureName));
       sinon.assert.calledWith(cookieSpy, md5(featureName), featureVal, {path: '/secret', domain: 'domain'});
       assert.equal(cookieVal, 'myVal');

@@ -35,5 +35,5 @@ var features = {
   }
 };
 
-var sm = new Signalman(features);
+var signal = new Signaler(features);
 ```

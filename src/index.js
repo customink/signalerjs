@@ -36,7 +36,7 @@ function cookieOptionsFromExpires(expires) {
   }
 }
 
-export default function Signalman(urlOrFeatures, config = {}) {
+export default function Signaler(urlOrFeatures, config = {}) {
   var transformCookieOptions = config.transformCookieOptions || (data => data);
   Cookies.defaults = config.cookieDefaults || cookieDefaults;
 

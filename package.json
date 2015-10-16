@@ -1,8 +1,8 @@
 {
-  "name": "signalmanjs",
+  "name": "signalerjs",
   "version": "0.2.0",
   "description": "JavaScript A/B testing feature flag library",
-  "main": "dist/signalmanjs.min.js",
+  "main": "dist/signalerjs.min.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "test": "./node_modules/.bin/karma start --single-run",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/customink/signalmanjs.git"
+    "url": "https://github.com/customink/signalerjs.git"
   },
   "bugs": {
-    "url": "https://github.com/customink/signalmanjs/issues"
+    "url": "https://github.com/customink/signalerjs/issues"
   },
   "keywords": [
     "testing",

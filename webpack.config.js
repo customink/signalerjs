@@ -8,9 +8,9 @@ module.exports = {
     ]
   },
   output: {
-    filename: 'dist/signalmanjs.min.js',
+    filename: 'dist/signalerjs.min.js',
     libraryTarget: 'umd',
-    library: 'signalmanjs'
+    library: 'signalerjs'
   },
   resolve: {
     extensions: ['', '.js'],

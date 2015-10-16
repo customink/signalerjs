@@ -1,13 +1,13 @@
 # Server Requirements
 
-In addition to setting up entirely on the [client-side](./feature_definition.md) `Signalmanjs` allows use of an existing API endpoint on a server to power the configuration of feature flags as well as sampling.
+In addition to setting up entirely on the [client-side](./feature_definition.md) `Signalerjs` allows use of an existing API endpoint on a server to power the configuration of feature flags as well as sampling.
 
 ## Setup
 
 ```js
-import Signalman from 'signalmanjs';
+import Signaler from 'signalerjs';
 
-var sm = new Signalman('/myEndpoint');
+var signal = new Signaler('/myEndpoint');
 ```
 
 ## Example Data Returned from API

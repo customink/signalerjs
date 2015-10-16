@@ -1,6 +1,6 @@
 # Configuration
 
-The `Signalmanjs` function takes an optional configuration object as its second argument. The configuration options both affect how cookies are stored in the browser.
+The `Signalerjs` function takes an optional configuration object as its second argument. The configuration options both affect how cookies are stored in the browser.
 
 ## cookieDefaults
 
@@ -19,7 +19,7 @@ var config = {
     domain: '.example.com'
   }
 };
-var sm = new Signalman(primaryEndpoint, config);
+var signal = new Signaler(primaryEndpoint, config);
 ```
 
 ## transformCookieOptions
@@ -36,5 +36,5 @@ var config = {
     };
   }
 };
-var sm = new Signalman(primaryEndpoint, config);
+var signal = new Signaler(primaryEndpoint, config);
 ```
