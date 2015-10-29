@@ -8,7 +8,7 @@
 
 ## Installation
 
-- `npm install signalerjs`
+- `npm install --save signalerjs`
 
 ## Setup
 
