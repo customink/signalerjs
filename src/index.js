@@ -3,9 +3,6 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 import sample from 'samplejs';
 import {defaultDomain, daysAfterToday} from 'helpers';
-import promisePolyfill from 'promisePolyfill';
-
-promisePolyfill();
 
 var cookieDefaults = {
   path: '/',

@@ -10,6 +10,10 @@
 
 - `npm install --save signalerjs`
 
+## Requirements
+
+Note that if you plan to use `Signalerjs` in browsers that do not have [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) support, you will need to polyfill it yourself with something like [`es6-promise`](https://github.com/jakearchibald/es6-promise).
+
 ## Setup
 
 ```js
