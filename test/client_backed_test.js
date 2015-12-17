@@ -104,17 +104,12 @@ describe('Signaler (client backed)', () => {
         it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', (done) => {
           var signal = new Signaler(features);
           var featureName = 'notSetTwo';
-          var dateStub = sinon.stub(Date, 'now', () => {
-            return 1443659501420;
-          });
           var flag = signal.featureFlag(featureName);
 
           flag.then(data => {
             assert.match(data, /^test|control$/);
             var cookieVal = Cookies.get(md5(featureName));
             assert.match(cookieVal, /^test|control$/);
-
-            dateStub.restore();
             done();
           });
         });

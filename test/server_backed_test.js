@@ -111,9 +111,6 @@ describe('Signaler (server backed)', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet2';
           var flagValue = 'flagValue';
-          var dateStub = sinon.stub(Date, 'now', () => {
-            return 1443659501420;
-          });
           var axiosStub = sinon.stub(axios, 'get', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
@@ -133,7 +130,6 @@ describe('Signaler (server backed)', () => {
               var cookieVal = Cookies.get(md5(featureName));
               assert.equal(cookieVal, flagValue);
               axiosStub.restore();
-              dateStub.restore();
               done();
             });
           }, 0);
