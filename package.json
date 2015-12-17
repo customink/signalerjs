@@ -48,9 +48,9 @@
     "webpack": "1.12.9"
   },
   "dependencies": {
-    "axios": "0.8.1",
     "blueimp-md5": "1.1.1",
     "cookies-js": "1.2.2",
-    "samplejs": "0.2.0"
+    "samplejs": "0.2.0",
+    "whatwg-fetch": "0.10.1"
   }
 }

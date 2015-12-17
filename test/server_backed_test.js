@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {Promise} from 'es6-promise';
-import axios from 'axios';
+import fetch from 'whatwg-fetch';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
 import Signaler from 'src';
@@ -31,13 +31,15 @@ describe('Signaler (server backed)', () => {
   describe('featureFlags', () => {
     it('returns current cookie values of feature flags', (done) => {
       var signal = new Signaler('myUrl');
-      var axiosStub = sinon.stub(axios, 'get', function(url) {
+      var fetchStub = sinon.stub(window, 'fetch', function(url) {
         return new Promise((resolve, reject) => {
           resolve({
-            data: {
-              featureOne: ['test', 'control'],
-              featureTwo: ['test', 'control'],
-              featureThree: ['test', 'control', 'something']
+            json: function() {
+              return {
+                featureOne: ['test', 'control'],
+                featureTwo: ['test', 'control'],
+                featureThree: ['test', 'control', 'something']
+              };
             }
           });
         });
@@ -46,7 +48,7 @@ describe('Signaler (server backed)', () => {
 
       setTimeout(() => {
         flags.then(data => {
-          sinon.assert.calledWith(axiosStub, 'myUrl.json');
+          sinon.assert.calledWith(fetchStub, 'myUrl.json');
           assert.deepEqual(data, {
             featureOne: 'control',
             featureTwo: 'test',
@@ -54,7 +56,7 @@ describe('Signaler (server backed)', () => {
           });
         });
 
-        axiosStub.restore();
+        fetchStub.restore();
         done();
       }, 0);
     });
@@ -81,12 +83,14 @@ describe('Signaler (server backed)', () => {
           var featureName = 'notSet';
           var flagValue = 'flagValue';
           var expiresValue = 'January 15, 2016';
-          var axiosStub = sinon.stub(axios, 'get', function(url) {
+          var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                data: {
-                  flag: flagValue,
-                  expires: expiresValue
+                json: function() {
+                  return {
+                    flag: flagValue,
+                    expires: expiresValue
+                  };
                 }
               });
             });
@@ -95,11 +99,11 @@ describe('Signaler (server backed)', () => {
 
           setTimeout(() => {
             flag.then(data => {
-              sinon.assert.calledWith(axiosStub, `myUrl/${featureName}.json`);
+              sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
               assert.equal(data, flagValue);
               var cookieVal = Cookies.get(md5(featureName));
               assert.equal(cookieVal, flagValue);
-              axiosStub.restore();
+              fetchStub.restore();
               done();
             });
           }, 0);
@@ -111,12 +115,14 @@ describe('Signaler (server backed)', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet2';
           var flagValue = 'flagValue';
-          var axiosStub = sinon.stub(axios, 'get', function(url) {
+          var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                data: {
-                  flag: flagValue,
-                  expires: 30
+                json: function() {
+                  return {
+                    flag: flagValue,
+                    expires: 30
+                  };
                 }
               });
             });
@@ -125,11 +131,11 @@ describe('Signaler (server backed)', () => {
 
           setTimeout(() => {
             flag.then(data => {
-              sinon.assert.calledWith(axiosStub, `myUrl/${featureName}.json`);
+              sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
               assert.equal(data, flagValue);
               var cookieVal = Cookies.get(md5(featureName));
               assert.equal(cookieVal, flagValue);
-              axiosStub.restore();
+              fetchStub.restore();
               done();
             });
           }, 0);
@@ -141,11 +147,13 @@ describe('Signaler (server backed)', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet3';
           var flagValue = 'flagValue';
-          var axiosStub = sinon.stub(axios, 'get', function(url) {
+          var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                data: {
-                  flag: flagValue
+                json: function() {
+                  return {
+                    flag: flagValue
+                  };
                 }
               });
             });
@@ -154,11 +162,11 @@ describe('Signaler (server backed)', () => {
 
           setTimeout(() => {
             flag.then(data => {
-              sinon.assert.calledWith(axiosStub, `myUrl/${featureName}.json`);
+              sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
               assert.equal(data, flagValue);
               var cookieVal = Cookies.get(md5(featureName));
               assert.equal(cookieVal, flagValue);
-              axiosStub.restore();
+              fetchStub.restore();
               done();
             });
           }, 0);

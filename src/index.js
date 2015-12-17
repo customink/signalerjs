@@ -1,5 +1,5 @@
 import md5 from 'blueimp-md5';
-import axios from 'axios';
+import fetch from 'whatwg-fetch';
 import Cookies from 'cookies-js';
 import sample from 'samplejs';
 import {defaultDomain, daysAfterToday} from 'helpers';
@@ -40,9 +40,11 @@ export default function Signaler(urlOrFeatures, config = {}) {
   function featureFlags() {
     switch (typeof urlOrFeatures) {
       case 'string':
-        return axios.get(`${urlOrFeatures}.json`).then(({data}) => {
-          return featuresCurrentFlags(Object.keys(data));
-        });
+        return window.fetch(`${urlOrFeatures}.json`)
+          .then(response => response.json())
+          .then(data => {
+            return featuresCurrentFlags(Object.keys(data));
+          });
       default:
         var featureFlags = featuresCurrentFlags(Object.keys(urlOrFeatures));
         return new Promise(resolve => resolve(featureFlags));
@@ -57,11 +59,13 @@ export default function Signaler(urlOrFeatures, config = {}) {
   function featureFlagFromServer(featureName) {
     switch (typeof urlOrFeatures) {
       case 'string':
-        return axios.get(`${urlOrFeatures}/${featureName}.json`).then(({data}) => {
-          var cookieOpts = cookieOptionsFromExpires(data.expires);
-          setFeatureFlag(featureName, data.flag, cookieOpts);
-          return data.flag;
-        });
+        return window.fetch(`${urlOrFeatures}/${featureName}.json`)
+          .then(response => response.json())
+          .then(data => {
+            var cookieOpts = cookieOptionsFromExpires(data.expires);
+            setFeatureFlag(featureName, data.flag, cookieOpts);
+            return data.flag;
+          });
       default:
         var feature = urlOrFeatures[featureName];
         var flag = sample(feature.flags);
