@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {defaultDomain, daysAfterToday} from 'src/helpers';
+import {defaultDomain, daysAfterToday} from '../src/helpers';
 
 describe('helpers', () => {
   describe('defaultDomain', () => {

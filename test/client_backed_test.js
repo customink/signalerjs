@@ -1,9 +1,8 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {Promise} from 'es6-promise';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
-import Signaler from 'src';
+import Signaler from '../src';
 
 var features = {
   featureOne: ['control', 'test'],
@@ -13,7 +12,7 @@ var features = {
   },
   featureThree: ['something', 'another'],
   notSetOne: {
-    expires: 'January 15, 2016',
+    expires: 'January 15, 3016',
     flags: ['test', 'control']
   },
   notSetTwo: {
@@ -86,11 +85,11 @@ describe('Signaler (client backed)', () => {
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
         it('gets the flag value and sets it to a cookie', (done) => {
+
           var signal = new Signaler(features);
           var featureName = 'notSetOne';
-          var flag = signal.featureFlag(featureName);
 
-          flag.then(data => {
+          signal.featureFlag(featureName).then(data => {
             assert.match(data, /^test|control$/);
             var cookieVal = Cookies.get(md5(featureName));
             assert.match(cookieVal, /^test|control$/);

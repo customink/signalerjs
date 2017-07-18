@@ -1,10 +1,9 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {Promise} from 'es6-promise';
 import 'whatwg-fetch';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
-import Signaler from 'src';
+import Signaler from '../src';
 
 describe('Signaler (server backed)', () => {
   beforeEach(() => {
@@ -68,7 +67,7 @@ describe('Signaler (server backed)', () => {
         var signal = new Signaler('myUrl');
         var flag = signal.featureFlag('featureOne');
         var flag2 = signal.featureFlag('featureTwo');
-        Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
+        return Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
           assert.equal(flagData, 'control');
           assert.equal(flag2Data, 'test');
           done();
@@ -78,35 +77,34 @@ describe('Signaler (server backed)', () => {
 
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
-        it('gets the flag value and sets it to a cookie', (done) => {
-          var signal = new Signaler('myUrl');
-          var featureName = 'notSet';
-          var flagValue = 'flagValue';
-          var expiresValue = 'January 15, 2016';
-          var fetchStub = sinon.stub(window, 'fetch', function(url) {
-            return new Promise((resolve, reject) => {
-              resolve({
+        let fetchStub;
+        var flagValue = 'flagValue';
+        var expiresValue = 'January 15, 3016';
+        beforeAll(() =>
+          fetchStub = sinon.stub(window, 'fetch', function(url) {
+            return Promise.resolve({
                 json() {
-                  return {
+                  return ({
                     flag: flagValue,
                     expires: expiresValue
-                  };
+                  });
                 }
-              });
             });
-          });
+          })
+        );
+        afterAll(() => fetchStub.restore());
+
+        it('gets the flag value and sets it to a cookie', () => {
+          var signal = new Signaler('myUrl');
+          var featureName = 'notSet';
           var flag = signal.featureFlag(featureName);
 
-          setTimeout(() => {
-            flag.then(data => {
-              sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
-              assert.equal(data, flagValue);
-              var cookieVal = Cookies.get(md5(featureName));
-              assert.equal(cookieVal, flagValue);
-              fetchStub.restore();
-              done();
-            });
-          }, 0);
+          return flag.then(data => {
+            sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
+            assert.equal(data, flagValue);
+            var cookieVal = Cookies.get(md5(featureName));
+            assert.equal(cookieVal, flagValue);
+          });
         });
       });
 
@@ -143,7 +141,7 @@ describe('Signaler (server backed)', () => {
       });
 
       describe('response.expires is not defined', () => {
-        it('gets the flag value and sets it to a cookie', (done) => {
+        it('gets the flag value and sets it to a cookie', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet3';
           var flagValue = 'flagValue';
@@ -159,17 +157,13 @@ describe('Signaler (server backed)', () => {
             });
           });
           var flag = signal.featureFlag(featureName);
-
-          setTimeout(() => {
-            flag.then(data => {
+          return flag.then(data => {
               sinon.assert.calledWith(fetchStub, `myUrl/${featureName}.json`);
               assert.equal(data, flagValue);
               var cookieVal = Cookies.get(md5(featureName));
               assert.equal(cookieVal, flagValue);
               fetchStub.restore();
-              done();
             });
-          }, 0);
         });
       });
     });
