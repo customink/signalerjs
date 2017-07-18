@@ -1,5 +1,5 @@
 import md5 from 'blueimp-md5';
-import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
 import Cookies from 'cookies-js';
 import sample from 'samplejs';
 import {defaultDomain, daysAfterToday} from 'helpers';

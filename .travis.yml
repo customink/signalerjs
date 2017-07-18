@@ -1,6 +1,12 @@
 language: node_js
-script: npm run lint && npm test
+script: npm run $TEST_SUITE
 sudo: false
+cache:
+  directories:
+    - node_modules
 node_js:
-  - "0.12"
-  - "4.0.0"
+  - "7.2.0"
+env:
+  matrix:
+    - TEST_SUITE=lint
+    - TEST_SUITE=test

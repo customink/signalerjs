@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {Promise} from 'es6-promise';
-import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
 import Signaler from 'src';
@@ -34,7 +34,7 @@ describe('Signaler (server backed)', () => {
       var fetchStub = sinon.stub(window, 'fetch', function(url) {
         return new Promise((resolve, reject) => {
           resolve({
-            json: function() {
+            json() {
               return {
                 featureOne: ['test', 'control'],
                 featureTwo: ['test', 'control'],
@@ -64,7 +64,7 @@ describe('Signaler (server backed)', () => {
 
   describe('featureFlag', () => {
     describe('feature is stored in a cookie already', () => {
-      it('returns the feature flag value', () => {
+      it('returns the feature flag value', (done) => {
         var signal = new Signaler('myUrl');
         var flag = signal.featureFlag('featureOne');
         var flag2 = signal.featureFlag('featureTwo');
@@ -86,7 +86,7 @@ describe('Signaler (server backed)', () => {
           var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                json: function() {
+                json() {
                   return {
                     flag: flagValue,
                     expires: expiresValue
@@ -118,7 +118,7 @@ describe('Signaler (server backed)', () => {
           var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                json: function() {
+                json() {
                   return {
                     flag: flagValue,
                     expires: 30
@@ -150,7 +150,7 @@ describe('Signaler (server backed)', () => {
           var fetchStub = sinon.stub(window, 'fetch', function(url) {
             return new Promise((resolve, reject) => {
               resolve({
-                json: function() {
+                json() {
                   return {
                     flag: flagValue
                   };

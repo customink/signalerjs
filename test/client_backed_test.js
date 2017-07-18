@@ -88,7 +88,6 @@ describe('Signaler (client backed)', () => {
         it('gets the flag value and sets it to a cookie', (done) => {
           var signal = new Signaler(features);
           var featureName = 'notSetOne';
-          var expiresValue = 'January 15, 2016';
           var flag = signal.featureFlag(featureName);
 
           flag.then(data => {
