@@ -39,7 +39,7 @@
   "dependencies": {
     "blueimp-md5": "^2.7.0",
     "cookies-js": "^1.2.3",
-    "samplejs": "0.2.0",
+    "samplejs": "^0.2.0",
     "whatwg-fetch": "^2.0.3"
   },
   "jest": {

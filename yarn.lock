@@ -2962,7 +2962,7 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-samplejs@0.2.0:
+samplejs@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/samplejs/-/samplejs-0.2.0.tgz#3174dff8c2d110fbf3ef56ca8fdabe9215f5dafc"
 
