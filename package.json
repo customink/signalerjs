@@ -4,7 +4,7 @@
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.js",
   "scripts": {
-    "build": "$(npm bin)/webpack",
+    "build": "rm -rf ./dist && $(npm bin)/webpack",
     "test": "$(npm bin)/jest",
     "lint": "$(npm bin)/eslint src/**/*.js test/**/*.js",
     "preversion": "yarn install && npm test && npm run lint",
