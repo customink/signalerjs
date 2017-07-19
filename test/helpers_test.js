@@ -17,7 +17,7 @@ describe('helpers', () => {
 
   describe('daysAfterToday', () => {
     it('returns date number of days after current time', () => {
-      var dateStub = sinon.stub(Date, 'now', () => {
+      var dateStub = sinon.stub(Date, 'now').callsFake(() => {
         return 1443659501420;
       });
       var date = daysAfterToday(20);

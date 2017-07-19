@@ -30,7 +30,7 @@ describe('Signaler (server backed)', () => {
   describe('featureFlags', () => {
     it('returns current cookie values of feature flags', (done) => {
       var signal = new Signaler('myUrl');
-      var fetchStub = sinon.stub(window, 'fetch', function(url) {
+      var fetchStub = sinon.stub(window, 'fetch').callsFake(function(url) {
         return new Promise((resolve, reject) => {
           resolve({
             json() {
@@ -81,7 +81,7 @@ describe('Signaler (server backed)', () => {
         var flagValue = 'flagValue';
         var expiresValue = 'January 15, 3016';
         beforeAll(() =>
-          fetchStub = sinon.stub(window, 'fetch', function(url) {
+          fetchStub = sinon.stub(window, 'fetch').callsFake(function(url) {
             return Promise.resolve({
                 json() {
                   return ({
@@ -113,7 +113,7 @@ describe('Signaler (server backed)', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet2';
           var flagValue = 'flagValue';
-          var fetchStub = sinon.stub(window, 'fetch', function(url) {
+          var fetchStub = sinon.stub(window, 'fetch').callsFake(function(url) {
             return new Promise((resolve, reject) => {
               resolve({
                 json() {
@@ -145,7 +145,7 @@ describe('Signaler (server backed)', () => {
           var signal = new Signaler('myUrl');
           var featureName = 'notSet3';
           var flagValue = 'flagValue';
-          var fetchStub = sinon.stub(window, 'fetch', function(url) {
+          var fetchStub = sinon.stub(window, 'fetch').callsFake(function(url) {
             return new Promise((resolve, reject) => {
               resolve({
                 json() {
