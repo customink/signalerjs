@@ -1,30 +1,40 @@
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
-  entry: './src',
+  devtool: 'source-map',
+  entry: {
+    signalerjs: 'index.js',
+    'signalerjs.min': 'index.js'
+  },
   module: {
-    loaders: [
-      {test: /\.js$/, loader: 'babel', exclude: /node_modules/}
-    ]
+    rules: [{test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/}]
   },
   output: {
-    filename: 'dist/signalerjs.min.js',
+    filename: 'dist/[name].js',
     libraryTarget: 'umd',
     library: 'signalerjs'
   },
   resolve: {
-    extensions: ['', '.js'],
-    modulesDirectories: ['node_modules', 'src'],
-    fallback: __dirname
+    modules: [
+      path.resolve('src'),
+      'node_modules'
+    ],
+    extensions: ['.js']
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
+   plugins: [
+     new webpack.LoaderOptionsPlugin({
+      minimize: true
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      include: /\.min\.js$/,
+      sourceMap: true
+    })
   ]
 };
