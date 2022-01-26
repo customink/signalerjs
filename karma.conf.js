@@ -52,16 +52,16 @@ module.exports = function(config) {
             }
           }
         ],
-        postLoaders: [
-          {
-            test: /\.js$/,
-            exclude: [
-              /test\//,
-              /node_modules\//
-            ],
-            loader: 'istanbul-instrumenter'
-          }
-        ]
+        // postLoaders: [
+        //   {
+        //     test: /\.js$/,
+        //     exclude: [
+        //       /test\//,
+        //       /node_modules\//
+        //     ],
+        //     loader: 'istanbul-instrumenter'
+        //   }
+        // ]
       },
       externals: [
         {"window": "window"}
