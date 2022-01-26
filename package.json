@@ -21,10 +21,9 @@
     "javascript",
     "feature testing"
   ],
-  "author": "Jonathan Lehman <jlehman@customink.com>",
+  "author": "Custom Ink Technology",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/eslint-parser": "",
     "@babel/eslint-plugin": "",
@@ -33,10 +32,8 @@
     "es6-promise": "3.0.2",
     "eslint": "^8.0",
     "karma": "^6.3",
-    "mocha": "2.3.4",
-    "mocha-loader": "0.7.1",
-    "phantomjs": "1.9.18",
-    "sinon": "git://github.com/cjohansen/Sinon.JS.git#b672042043517b9f84e14ed0fb8265126168778a",
+    "mocha": "^9.0.0",
+    "sinon": "^12.0.1",
     "webpack": "^5.0"
   },
   "dependencies": {
