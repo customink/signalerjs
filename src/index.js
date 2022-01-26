@@ -1,8 +1,7 @@
 import md5 from 'blueimp-md5';
-import fetch from 'whatwg-fetch';
 import Cookies from 'cookies-js';
 import sample from 'samplejs';
-import {defaultDomain, daysAfterToday} from 'helpers';
+import {defaultDomain, daysAfterToday} from './helpers';
 
 var cookieDefaults = {
   path: '/',
@@ -40,7 +39,8 @@ export default function Signaler(urlOrFeatures, config = {}) {
   function featureFlags() {
     switch (typeof urlOrFeatures) {
       case 'string':
-        return window.fetch(`${urlOrFeatures}.json`)
+        return window
+          .fetch(`${urlOrFeatures}.json`)
           .then(response => response.json())
           .then(data => {
             return featuresCurrentFlags(Object.keys(data));
@@ -53,13 +53,16 @@ export default function Signaler(urlOrFeatures, config = {}) {
 
   function featureFlag(featureName) {
     var cookieValue = featureFlagFromCookie(featureName);
-    return cookieValue ? new Promise(resolve => resolve(cookieValue)) : featureFlagFromServer(featureName);
+    return cookieValue
+      ? new Promise(resolve => resolve(cookieValue))
+      : featureFlagFromServer(featureName);
   }
 
   function featureFlagFromServer(featureName) {
     switch (typeof urlOrFeatures) {
       case 'string':
-        return window.fetch(`${urlOrFeatures}/${featureName}.json`)
+        return window
+          .fetch(`${urlOrFeatures}/${featureName}.json`)
           .then(response => response.json())
           .then(data => {
             var cookieOpts = cookieOptionsFromExpires(data.expires);

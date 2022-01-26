@@ -76,20 +76,20 @@ See full [API docs](docs/api.md).
 
 ```js
 // get feature flags user is opted into
-signal.featureFlags().then(function(flags) {
-// flags =>
-// {
-//   flagOne: 'test',
-//   flagTwo: 'control',
-//   anotherFlag: 'flagValue',
-//   // user has not yet been sampled into this test group
-//   yetAnother: undefined
-// }
+signal.featureFlags().then(function (flags) {
+  // flags =>
+  // {
+  //   flagOne: 'test',
+  //   flagTwo: 'control',
+  //   anotherFlag: 'flagValue',
+  //   // user has not yet been sampled into this test group
+  //   yetAnother: undefined
+  // }
 });
 
 // read flag value for given feature
-signal.featureFlag('flagOne').then(function(flag) {
-// flag => 'test'
+signal.featureFlag('flagOne').then(function (flag) {
+  // flag => 'test'
 });
 ```
 
