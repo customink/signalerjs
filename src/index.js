@@ -78,6 +78,19 @@ export default function Signaler(urlOrFeatures, config = {}) {
     }
   }
 
+  function featureFlagSynchronous(featureName) {
+    var cookieValue = featureFlagFromCookie(featureName);
+    return cookieValue ? cookieValue : featureFlagInitialSample(featureName);
+  }
+
+  function featureFlagInitialSample(featureName) {
+    var feature = urlOrFeatures[featureName];
+    var flag = sample(feature.flags);
+    var cookieOpts = cookieOptionsFromExpires(feature.expires);
+    setFeatureFlag(featureName, flag, cookieOpts);
+    return flag;
+  }
+
   function setFeatureFlag(featureName, flag, options = {}) {
     Cookies.set(md5(featureName), flag, transformCookieOptions(options));
   }
@@ -85,6 +98,7 @@ export default function Signaler(urlOrFeatures, config = {}) {
   return {
     featureFlags,
     featureFlag,
+    featureFlagSynchronous,
     setFeatureFlag
   };
 }
