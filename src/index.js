@@ -1,8 +1,7 @@
 import md5 from 'blueimp-md5';
-import fetch from 'whatwg-fetch';
 import Cookies from 'cookies-js';
 import sample from 'samplejs';
-import {defaultDomain, daysAfterToday} from 'helpers';
+import {defaultDomain, daysAfterToday} from './helpers';
 
 var cookieDefaults = {
   path: '/',
@@ -60,7 +59,11 @@ export default function Signaler(urlOrFeatures, config = {}) {
     switch (typeof urlOrFeatures) {
       case 'string':
         return window.fetch(`${urlOrFeatures}/${featureName}.json`)
-          .then(response => response.json())
+          .then(response => {
+            console.log(response);
+            console.log(response.json());
+            response.json();
+          })
           .then(data => {
             var cookieOpts = cookieOptionsFromExpires(data.expires);
             setFeatureFlag(featureName, data.flag, cookieOpts);

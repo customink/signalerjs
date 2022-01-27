@@ -9,10 +9,13 @@ describe('helpers', () => {
       assert.equal(domain, '.example.com');
     });
 
-    it('it returns the hostname if there are not more than two path segments', () => {
-      var domain = defaultDomain('example.io');
-      assert.equal(domain, '.example.io');
-    });
+    it(
+      'it returns the hostname if there are not more than two path segments',
+      () => {
+        var domain = defaultDomain('example.io');
+        assert.equal(domain, '.example.io');
+      }
+    );
   });
 
   describe('daysAfterToday', () => {
