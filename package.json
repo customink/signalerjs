@@ -6,7 +6,7 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint ./src ./test"
+    "lint": "npx eslint ./src ./test"
   },
   "repository": {
     "type": "git",
@@ -28,18 +28,15 @@
     "@babel/eslint-parser": "",
     "@babel/eslint-plugin": "",
     "@babel/preset-env": "",
-    "chai": "3.4.1",
     "es6-promise": "4.2.4",
     "eslint": "^8.0",
     "eslint-plugin-jest": "^26.0.0",
     "jest": "^27.4.7",
-    "sinon": "^12.0.1",
     "webpack": "^5.0"
   },
   "dependencies": {
     "blueimp-md5": "2.19.0",
     "cookies-js": "1.2.3",
-    "samplejs": "0.2.0",
-    "whatwg-fetch": "0.10.1"
+    "samplejs": "0.2.0"
   }
 }
