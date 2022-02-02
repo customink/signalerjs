@@ -1,30 +1,34 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src',
   module: {
-    loaders: [
-      {test: /\.js$/, loader: 'babel', exclude: /node_modules/}
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [['@babel/preset-env', {targets: 'defaults'}]]
+          }
+        }
+      },
     ]
   },
   output: {
-    filename: 'dist/signalerjs.min.js',
+    filename: 'signalerjs.min.js',
     libraryTarget: 'umd',
     library: 'signalerjs'
   },
   resolve: {
     extensions: ['', '.js'],
-    modulesDirectories: ['node_modules', 'src'],
-    fallback: __dirname
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        NODE_ENV: JSON.stringify('production')
       }
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    })
   ]
 };

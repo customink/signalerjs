@@ -48,13 +48,13 @@ Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 ```js
 var signal = new Signaler(features);
 
-signal.featureFlags().then(function(flags) {
-// flags =>
-// {
-//   featureOne: 'test',
-//   featureTwo: 'control',
-//   featureS: undefined
-// }
+signal.featureFlags().then(function (flags) {
+  // flags =>
+  // {
+  //   featureOne: 'test',
+  //   featureTwo: 'control',
+  //   featureS: undefined
+  // }
 });
 ```
 
@@ -65,7 +65,7 @@ Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 ```js
 var signal = new Signaler(features);
 
-signal.featureFlag('featureOne').then(function(flag) {
+signal.featureFlag('featureOne').then(function (flag) {
   // flag => 'test'
 });
 ```

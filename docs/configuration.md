@@ -7,6 +7,7 @@ The `Signalerjs` function takes an optional configuration object as its second a
 The `cookieDefaults` key of the configuration object allows to set the default options used when setting cookies (`path`, `domain`, and `expires`).
 
 Defaults:
+
 - `path`: '/'
 - `domain`: `window.location.hostname`
 - `expires`: 30 days after the current date
@@ -29,7 +30,7 @@ This is a hook to allow for even more dynamic configuration of the cookie option
 ```js
 var primaryEndpoint = '/myUrl';
 var config = {
-  transformCookieOptions: function(config) {
+  transformCookieOptions: function (config) {
     return {
       path: config.path,
       expires: Math.floor(Math.random() * 30) + 1

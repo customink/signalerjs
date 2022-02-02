@@ -3,9 +3,9 @@ import sinon from 'sinon';
 import {Promise} from 'es6-promise';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
-import Signaler from 'src';
+import Signaler from '../src';
 
-var features = {
+const features = {
   featureOne: ['control', 'test'],
   featureTwo: {
     control: 0.2,
@@ -13,7 +13,8 @@ var features = {
   },
   featureThree: ['something', 'another'],
   notSetOne: {
-    expires: 'January 15, 2016',
+    // 12096e5 is 14 days in miliseconds
+    expires: new Date(Date.now() + 12096e5),
     flags: ['test', 'control']
   },
   notSetTwo: {
@@ -43,7 +44,7 @@ describe('Signaler (client backed)', () => {
 
   describe('setup', () => {
     it('sets features', () => {
-      var signal = new Signaler(features);
+      const signal = new Signaler(features);
       assert.isFunction(signal.featureFlags);
       assert.isFunction(signal.featureFlag);
       assert.isFunction(signal.setFeatureFlag);
@@ -51,9 +52,9 @@ describe('Signaler (client backed)', () => {
   });
 
   describe('featureFlags', () => {
-    it('returns current cookie values of feature flags', (done) => {
-      var signal = new Signaler(features);
-      var flags = signal.featureFlags();
+    it('returns current cookie values of feature flags', done => {
+      const signal = new Signaler(features);
+      const flags = signal.featureFlags();
 
       flags.then(data => {
         assert.deepEqual(data, {
@@ -71,10 +72,10 @@ describe('Signaler (client backed)', () => {
 
   describe('featureFlag', () => {
     describe('feature is stored in a cookie already', () => {
-      it('returns the feature flag value', (done) => {
-        var signal = new Signaler(features);
-        var flag = signal.featureFlag('featureOne');
-        var flag2 = signal.featureFlag('featureTwo');
+      it('returns the feature flag value', done => {
+        const signal = new Signaler(features);
+        const flag = signal.featureFlag('featureOne');
+        const flag2 = signal.featureFlag('featureTwo');
         Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
           assert.equal(flagData, 'control');
           assert.equal(flag2Data, 'test');
@@ -85,15 +86,14 @@ describe('Signaler (client backed)', () => {
 
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
-        it('gets the flag value and sets it to a cookie', (done) => {
-          var signal = new Signaler(features);
-          var featureName = 'notSetOne';
-          var expiresValue = 'January 15, 2016';
-          var flag = signal.featureFlag(featureName);
+        it('gets the flag value and sets it to a cookie', done => {
+          const signal = new Signaler(features);
+          const featureName = 'notSetOne';
+          const flag = signal.featureFlag(featureName);
 
           flag.then(data => {
             assert.match(data, /^test|control$/);
-            var cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(md5(featureName));
             assert.match(cookieVal, /^test|control$/);
             done();
           });
@@ -101,14 +101,14 @@ describe('Signaler (client backed)', () => {
       });
 
       describe('response.expires is a number', () => {
-        it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', (done) => {
-          var signal = new Signaler(features);
-          var featureName = 'notSetTwo';
-          var flag = signal.featureFlag(featureName);
+        it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', done => {
+          const signal = new Signaler(features);
+          const featureName = 'notSetTwo';
+          const flag = signal.featureFlag(featureName);
 
           flag.then(data => {
             assert.match(data, /^test|control$/);
-            var cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(md5(featureName));
             assert.match(cookieVal, /^test|control$/);
             done();
           });
@@ -116,14 +116,14 @@ describe('Signaler (client backed)', () => {
       });
 
       describe('response.expires is not defined', () => {
-        it('gets the flag value and sets it to a cookie', (done) => {
-          var signal = new Signaler(features);
-          var featureName = 'notSetThree';
-          var flag = signal.featureFlag(featureName);
+        it('gets the flag value and sets it to a cookie', done => {
+          const signal = new Signaler(features);
+          const featureName = 'notSetThree';
+          const flag = signal.featureFlag(featureName);
 
           flag.then(data => {
             assert.match(data, /^flag|flag2/);
-            var cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(md5(featureName));
             assert.match(cookieVal, /^flag|flag2/);
             done();
           });
@@ -134,33 +134,35 @@ describe('Signaler (client backed)', () => {
 
   describe('setFeatureFlag', () => {
     it('sets the cookie with the options passed in', () => {
-      var signal = new Signaler(features);
-      var featureName = 'newFeature';
-      var featureVal = 'myVal';
-      var cookieSpy = sinon.spy(Cookies, 'set');
+      const signal = new Signaler(features);
+      const featureName = 'newFeature';
+      const featureVal = 'myVal';
+      const cookieSpy = sinon.spy(Cookies, 'set');
       signal.setFeatureFlag(featureName, featureVal);
-      var cookieVal = Cookies.get(md5(featureName));
+      const cookieVal = Cookies.get(md5(featureName));
       sinon.assert.calledWith(cookieSpy, md5(featureName), featureVal, {});
       assert.equal(cookieVal, 'myVal');
       cookieSpy.restore();
     });
 
     it('transforms cookie options', () => {
-      var signal = new Signaler(features, {
-        transformCookieOptions: (obj) => {
+      const signal = new Signaler(features, {
+        transformCookieOptions: obj => {
           obj.path = '/secret';
           return obj;
         }
       });
-      var featureName = 'newFeature';
-      var featureVal = 'myVal';
-      var cookieSpy = sinon.spy(Cookies, 'set');
+      const featureName = 'newFeature';
+      const featureVal = 'myVal';
+      const cookieSpy = sinon.spy(Cookies, 'set');
       signal.setFeatureFlag(featureName, featureVal, {domain: 'domain'});
-      var cookieVal = Cookies.get(md5(featureName));
-      sinon.assert.calledWith(cookieSpy, md5(featureName), featureVal, {path: '/secret', domain: 'domain'});
+      const cookieVal = Cookies.get(md5(featureName));
+      sinon.assert.calledWith(cookieSpy, md5(featureName), featureVal, {
+        path: '/secret',
+        domain: 'domain'
+      });
       assert.equal(cookieVal, 'myVal');
       cookieSpy.restore();
     });
   });
 });
-
