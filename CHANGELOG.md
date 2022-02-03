@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2022-02-03
+
+### Changed
+
+- Added `browserslist` section to `package.json` to specify that babel should transpile to ES5
+
 ## [0.5.0] - 2022-02-01
 
 ### Added
