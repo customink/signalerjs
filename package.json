@@ -4,7 +4,7 @@
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.min.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode production",
     "test": "jest",
     "lint": "npx eslint ./src ./test"
   },
@@ -23,6 +23,11 @@
   ],
   "author": "Custom Ink Technology",
   "license": "MIT",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/eslint-parser": "^7.0.0",
