@@ -1,4 +1,3 @@
-import {Promise} from 'es6-promise';
 import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
 import Signaler from '../src';
@@ -50,7 +49,7 @@ describe('Signaler (client backed)', () => {
   });
 
   describe('featureFlags', () => {
-    it('returns current cookie values of feature flags', async () => {
+    it('returns current cookie values of feature flags', () => {
       const returnedFlags = {
         featureOne: 'control',
         featureTwo: 'test',
@@ -62,65 +61,55 @@ describe('Signaler (client backed)', () => {
       const signal = new Signaler(features);
       const flags = signal.featureFlags();
 
-      await flags.then(data => {
-        expect(data).toEqual(returnedFlags);
-      });
+      expect(flags).toEqual(returnedFlags);
     });
   });
 
   describe('featureFlag', () => {
     describe('feature is stored in a cookie already', () => {
-      it('returns the feature flag value', async () => {
+      it('returns the feature flag value', () => {
         const signal = new Signaler(features);
         const flag = signal.featureFlag('featureOne');
         const flag2 = signal.featureFlag('featureTwo');
-        await Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
-          expect(flagData).toEqual('control');
-          expect(flag2Data).toEqual('test');
-        });
+        expect(flag).toEqual('control');
+        expect(flag2).toEqual('test');
       });
     });
 
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
-        it('gets the flag value and sets it to a cookie', async () => {
+        it('gets the flag value and sets it to a cookie', () => {
           const signal = new Signaler(features);
           const featureName = 'notSetOne';
           const flag = signal.featureFlag(featureName);
-
-          await flag.then(data => {
-            expect(data).toMatch(/^test|control$/);
-            const cookieVal = Cookies.get(md5(featureName));
-            expect(cookieVal).toMatch(/^test|control$/);
-          });
+          expect(flag).toMatch(/^test|control$/);
+         
+          const cookieVal = Cookies.get(md5(featureName));
+          expect(cookieVal).toMatch(/^test|control$/);
         });
       });
 
       describe('response.expires is a number', () => {
-        it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', async () => {
+        it('gets the flag value and sets it to a cookie with the expires option being the number of days after the current date', () => {
           const signal = new Signaler(features);
           const featureName = 'notSetTwo';
           const flag = signal.featureFlag(featureName);
-
-          await flag.then(data => {
-            expect(data).toMatch(/^test|control$/);
-            const cookieVal = Cookies.get(md5(featureName));
-            expect(cookieVal).toMatch(/^test|control$/);
-          });
+          expect(flag).toMatch(/^test|control$/);
+          
+          const cookieVal = Cookies.get(md5(featureName));
+          expect(cookieVal).toMatch(/^test|control$/);
         });
       });
 
       describe('response.expires is not defined', () => {
-        it('gets the flag value and sets it to a cookie', async () => {
+        it('gets the flag value and sets it to a cookie', () => {
           const signal = new Signaler(features);
           const featureName = 'notSetThree';
           const flag = signal.featureFlag(featureName);
-
-          await flag.then(data => {
-            expect(data).toMatch(/^flag|flag2/);
-            const cookieVal = Cookies.get(md5(featureName));
-            expect(cookieVal).toMatch(/^flag|flag2/);
-          });
+          expect(flag).toMatch(/^flag|flag2/);
+          
+          const cookieVal = Cookies.get(md5(featureName));
+          expect(cookieVal).toMatch(/^flag|flag2/);
         });
       });
     });
