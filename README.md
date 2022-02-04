@@ -92,7 +92,7 @@ signal.featureFlags().then(function (flags) {
 
 ### With Server
 ```js
-signal.featureFlag('flagOne').then(function(flag) {
+signal.featureFlagFromServer('flagOne').then(function(flag) {
   if (flag === 'test') {
     // custom logic if user has 'test' flag for feature 'flagOne'
   else if (flag === 'control') {

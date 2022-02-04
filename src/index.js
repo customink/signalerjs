@@ -9,7 +9,7 @@ const cookieDefaults = {
   expires: daysAfterToday(30)
 };
 
-function featuresCurrentFlags(features) {
+const featuresCurrentFlags = features => {
   const flags = {};
   features.map(featureName => {
     flags[featureName] = featureFlagFromCookie(featureName);
@@ -17,11 +17,11 @@ function featuresCurrentFlags(features) {
   return flags;
 }
 
-function featureFlagFromCookie(featureName) {
+const featureFlagFromCookie = featureName => {
   return Cookies.get(md5(featureName));
 }
 
-function cookieOptionsFromExpires(expires) {
+const cookieOptionsFromExpires = expires => {
   switch (typeof expires) {
     case 'string':
       return {expires};
@@ -36,7 +36,7 @@ export default function Signaler(urlOrFeatures, config = {}) {
   const transformCookieOptions = config.transformCookieOptions || (data => data);
   Cookies.defaults = config.cookieDefaults || cookieDefaults;
 
-  function featureFlags() {
+  const featureFlags = () => {
     switch (typeof urlOrFeatures) {
       case 'string':
         return window
@@ -50,41 +50,38 @@ export default function Signaler(urlOrFeatures, config = {}) {
     }
   }
 
-  function featureFlag(featureName) {
+  const featureFlag = featureName => {
     const cookieValue = featureFlagFromCookie(featureName);
-    return cookieValue
-      ? cookieValue : featureFlagFromServer(featureName);
-  }
-
-  function featureFlagFromServer(featureName) {
-    switch (typeof urlOrFeatures) {
-      case 'string': {
-        return window
-          .fetch(`${urlOrFeatures}/${featureName}.json`)
-          .then(response => response.json())
-          .then(data => {
-            const cookieOpts = cookieOptionsFromExpires(data.expires);
-            setFeatureFlag(featureName, data.flag, cookieOpts);
-            return data.flag;
-          });
-        }
-      default: {
-        const feature = urlOrFeatures[featureName];
-        const flag = sample(feature.flags);
-        const cookieOpts = cookieOptionsFromExpires(feature.expires);
-        setFeatureFlag(featureName, flag, cookieOpts);
-        return flag;
-      }
+    if(cookieValue) {
+      return cookieValue;
+    } else { 
+      const feature = urlOrFeatures[featureName];
+      const flag = sample(feature.flags);
+      const cookieOpts = cookieOptionsFromExpires(feature.expires);
+      setFeatureFlag(featureName, flag, cookieOpts);
+      return flag;
     }
   }
 
-  function setFeatureFlag(featureName, flag, options = {}) {
+  const featureFlagFromServer = featureName => {
+    return window
+      .fetch(`${urlOrFeatures}/${featureName}.json`)
+      .then(response => response.json())
+      .then(data => {
+        const cookieOpts = cookieOptionsFromExpires(data.expires);
+        setFeatureFlag(featureName, data.flag, cookieOpts);
+        return data.flag;
+      });
+  }
+
+  const setFeatureFlag = (featureName, flag, options = {}) => {
     Cookies.set(md5(featureName), flag, transformCookieOptions(options));
   }
 
   return {
     featureFlags,
     featureFlag,
+    featureFlagFromServer,
     setFeatureFlag
   };
 }
