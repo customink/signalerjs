@@ -60,7 +60,7 @@ signal.featureFlags().then(function (flags) {
 
 ## featureFlag
 
-Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing the flag value a user has for a given feature. If the user is not flagged into a test group for that feature, they are sampled into one at this time and the value is stored to a cookie and returned.
+Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing the flag value a user has for a given feature if you are requesting via server-side and just the flag value if you are requesting via client-side. If the user is not flagged into a test group for that feature, they are sampled into one at this time and the value is stored to a cookie and returned.
 
 ```js
 var signal = new Signaler(features);
