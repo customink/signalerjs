@@ -27,7 +27,7 @@ describe('Signaler (server backed)', () => {
     it('sets url', () => {
       var signal = new Signaler('myUrl');
       expect(signal.featureFlags).toBeInstanceOf(Function);
-      expect(signal.featureFlag).toBeInstanceOf(Function);
+      expect(signal.featureFlagFromServer).toBeInstanceOf(Function);
       expect(signal.setFeatureFlag).toBeInstanceOf(Function);
     });
   });
@@ -64,8 +64,8 @@ describe('Signaler (server backed)', () => {
     describe('feature is stored in a cookie already', () => {
       it('returns the feature flag value', () => {
         const signal = new Signaler('myUrl');
-        const flag = signal.featureFlag('featureOne');
-        const flag2 = signal.featureFlag('featureTwo');
+        const flag = signal.featureFlagFromServer('featureOne');
+        const flag2 = signal.featureFlagFromServer('featureTwo');
         Promise.all([flag, flag2]).then(([flagData, flag2Data]) => {
           expect(flagData).toEqual('control');
           expect(flag2Data).toEqual('test');
@@ -88,7 +88,7 @@ describe('Signaler (server backed)', () => {
           const mockFetch = window.fetch.mockImplementation(() =>
             Promise.resolve(response)
           );
-          const flag = signal.featureFlag(featureName);
+          const flag = signal.featureFlagFromServer(featureName);
 
           await flag.then(data => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
@@ -111,7 +111,7 @@ describe('Signaler (server backed)', () => {
           const mockFetch = window.fetch.mockImplementation(() =>
             Promise.resolve(response)
           );
-          const flag = signal.featureFlag(featureName);
+          const flag = signal.featureFlagFromServer(featureName);
 
           await flag.then(data => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
@@ -132,7 +132,7 @@ describe('Signaler (server backed)', () => {
           const mockFetch = window.fetch.mockImplementation(() =>
             Promise.resolve(response)
           );
-          const flag = signal.featureFlag(featureName);
+          const flag = signal.featureFlagFromServer(featureName);
 
           await flag.then(data => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
