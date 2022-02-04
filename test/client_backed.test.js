@@ -49,7 +49,7 @@ describe('Signaler (client backed)', () => {
   });
 
   describe('featureFlags', () => {
-    it('returns current cookie values of feature flags', () => {
+    it('returns current cookie values of feature flags', async () => {
       const returnedFlags = {
         featureOne: 'control',
         featureTwo: 'test',
@@ -61,7 +61,9 @@ describe('Signaler (client backed)', () => {
       const signal = new Signaler(features);
       const flags = signal.featureFlags();
 
-      expect(flags).toEqual(returnedFlags);
+      await flags.then(data => {
+        expect(data).toEqual(returnedFlags);
+      });
     });
   });
 

@@ -46,7 +46,7 @@ export default function Signaler(urlOrFeatures, config = {}) {
             return featuresCurrentFlags(Object.keys(data));
           });
       default:
-        return featuresCurrentFlags(Object.keys(urlOrFeatures));
+        return new Promise(resolve => resolve(featuresCurrentFlags(Object.keys(urlOrFeatures))));
     }
   }
 
