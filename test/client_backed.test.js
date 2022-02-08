@@ -83,21 +83,18 @@ describe('Signaler (client backed)', () => {
         Cookies.set(md5('featureWithMd5'), 'test');
       });
 
-      it('sets a new cookie w/o md5 encrpytion, expires the old cookie, and returns the flag value', async () => {
+      it('sets a new cookie w/o md5 encrpytion, expires the old cookie, and returns the flag value', () => {
         const features = {featureWithMd5: ['control', 'test'],}
         const signal = new Signaler(features);
         const featureName = 'featureWithMd5'
         const flag = signal.featureFlag(featureName)
-
-        await flag.then(data => {
-          expect(data).toEqual('test');
-          
-          const expiredCookieVal = Cookies.get(md5(featureName));
-          expect(expiredCookieVal).toEqual(undefined);
-          
-          const newCookieVal = Cookies.get(`feature_${featureName}`)
-          expect(newCookieVal).toMatch(/^test|control$/);
-        });
+        expect(flag).toEqual('test');
+        
+        const expiredCookieVal = Cookies.get(md5(featureName));
+        expect(expiredCookieVal).toEqual(undefined);
+        
+        const newCookieVal = Cookies.get(`feature_${featureName}`)
+        expect(newCookieVal).toMatch(/^test|control$/);
       })
     })
 
