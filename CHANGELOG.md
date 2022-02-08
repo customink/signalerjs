@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated all client-based value getting to behave sychronously
+- When getting a cookie value, added a check for md5 encryption and if found, we create new cookie without encryption and expire the old cookie
+
+### Deprecated
+
+- md5
 
 ## [0.5.1] - 2022-02-03
 
