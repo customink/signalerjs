@@ -86,17 +86,13 @@ signal.featureFlags().then(function (flags) {
   //   yetAnother: undefined
   // }
 });
-
-// read flag value for given feature
-signal.featureFlag('flagOne').then(function (flag) {
-  // flag => 'test'
-});
 ```
 
-## Example AB Test Usage
+## Example AB Test Usage/Reading values
 
+### With Server
 ```js
-signal.featureFlag('flagOne').then(function(flag) {
+signal.featureFlagFromServer('flagOne').then(function(flag) {
   if (flag === 'test') {
     // custom logic if user has 'test' flag for feature 'flagOne'
   else if (flag === 'control') {
@@ -105,4 +101,16 @@ signal.featureFlag('flagOne').then(function(flag) {
     // other logic
   }
 });
+```
+
+### Without Server
+```js
+const flag = signal.featureFlag('flagOne')
+if (flag === 'test') {
+  // custom logic if user has 'test' flag for feature 'flagOne'
+else if (flag === 'control') {
+  // custom logic if user has 'control' flag for feature 'flagOne'
+} else {
+  // other logic
+}
 ```
