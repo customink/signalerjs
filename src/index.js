@@ -18,7 +18,14 @@ const featuresCurrentFlags = features => {
 }
 
 const featureFlagFromCookie = featureName => {
-  return Cookies.get(md5(featureName));
+  let cookieValue = Cookies.get(md5(featureName));
+  if (cookieValue) {
+    Cookies.set(`feature_${featureName}`, cookieValue);
+    Cookies.expire(md5(featureName));
+  } else {
+    cookieValue = Cookies.get(featureName);
+  }
+  return cookieValue;
 }
 
 const cookieOptionsFromExpires = expires => {
@@ -75,7 +82,7 @@ export default function Signaler(urlOrFeatures, config = {}) {
   }
 
   const setFeatureFlag = (featureName, flag, options = {}) => {
-    Cookies.set(md5(featureName), flag, transformCookieOptions(options));
+    Cookies.set(`feature_${featureName}`, flag, transformCookieOptions(options));
   }
 
   return {

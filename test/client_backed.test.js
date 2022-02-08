@@ -28,15 +28,15 @@ const features = {
 
 describe('Signaler (client backed)', () => {
   beforeEach(() => {
-    Cookies.set(md5('featureOne'), 'control');
-    Cookies.set(md5('featureTwo'), 'test');
-    Cookies.set(md5('featureThree'), 'something');
+    Cookies.set('featureOne', 'control');
+    Cookies.set('featureTwo', 'test');
+    Cookies.set('featureThree', 'something');
   });
 
   afterEach(() => {
-    Cookies.expire(md5('featureOne'));
-    Cookies.expire(md5('featureTwo'));
-    Cookies.expire(md5('featureThree'));
+    Cookies.expire('featureOne');
+    Cookies.expire('featureTwo');
+    Cookies.expire('featureThree');
   });
 
   describe('setup', () => {
@@ -78,6 +78,29 @@ describe('Signaler (client backed)', () => {
       });
     });
 
+    describe('feature is stored in a cookie as an md5 encrypted value', () => {
+      beforeAll(() => {
+        Cookies.set(md5('featureWithMd5'), 'test');
+      });
+
+      it('sets a new cookie w/o md5 encrpytion, expires the old cookie, and returns the flag value', async () => {
+        const features = {featureWithMd5: ['control', 'test'],}
+        const signal = new Signaler(features);
+        const featureName = 'featureWithMd5'
+        const flag = signal.featureFlag(featureName)
+
+        await flag.then(data => {
+          expect(data).toEqual('test');
+          
+          const expiredCookieVal = Cookies.get(md5(featureName));
+          expect(expiredCookieVal).toEqual(undefined);
+          
+          const newCookieVal = Cookies.get(`feature_${featureName}`)
+          expect(newCookieVal).toMatch(/^test|control$/);
+        });
+      })
+    })
+
     describe('feature is not stored in a cookie', () => {
       describe('response.expires is a string', () => {
         it('gets the flag value and sets it to a cookie', () => {
@@ -86,7 +109,7 @@ describe('Signaler (client backed)', () => {
           const flag = signal.featureFlag(featureName);
           expect(flag).toMatch(/^test|control$/);
          
-          const cookieVal = Cookies.get(md5(featureName));
+          const cookieVal = Cookies.get(`feature_${featureName}`);
           expect(cookieVal).toMatch(/^test|control$/);
         });
       });
@@ -98,7 +121,7 @@ describe('Signaler (client backed)', () => {
           const flag = signal.featureFlag(featureName);
           expect(flag).toMatch(/^test|control$/);
           
-          const cookieVal = Cookies.get(md5(featureName));
+          const cookieVal = Cookies.get(`feature_${featureName}`);
           expect(cookieVal).toMatch(/^test|control$/);
         });
       });
@@ -110,7 +133,7 @@ describe('Signaler (client backed)', () => {
           const flag = signal.featureFlag(featureName);
           expect(flag).toMatch(/^flag|flag2/);
           
-          const cookieVal = Cookies.get(md5(featureName));
+          const cookieVal = Cookies.get(`feature_${featureName}`);
           expect(cookieVal).toMatch(/^flag|flag2/);
         });
       });
@@ -124,15 +147,19 @@ describe('Signaler (client backed)', () => {
       jest.restoreAllMocks();
     });
 
+    afterEach(() => {
+      cookieSpy.mockClear();
+    })
+
     it('sets the cookie with the options passed in', () => {
       const signal = new Signaler(features);
       const featureName = 'newFeature';
       const featureVal = 'myVal';
 
       signal.setFeatureFlag(featureName, featureVal);
-      const cookieVal = Cookies.get(md5(featureName));
+      const cookieVal = Cookies.get(`feature_${featureName}`);
       
-      expect(cookieSpy).toHaveBeenCalledWith(md5(featureName), featureVal, {});
+      expect(cookieSpy).toHaveBeenCalledWith(`feature_${featureName}`, featureVal, {});
       expect(cookieVal).toEqual('myVal');
     });
 
@@ -147,9 +174,9 @@ describe('Signaler (client backed)', () => {
       const featureVal = 'myVal';
 
       signal.setFeatureFlag(featureName, featureVal, {domain: 'domain'});
-      const cookieVal = Cookies.get(md5(featureName));
+      const cookieVal = Cookies.get(`feature_${featureName}`);
       
-      expect(cookieSpy).toHaveBeenCalledWith(md5(featureName), featureVal, {
+      expect(cookieSpy).toHaveBeenCalledWith(`feature_${featureName}`, featureVal, {
         path: '/secret',
         domain: 'domain'
       });

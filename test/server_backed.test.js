@@ -1,5 +1,5 @@
 import {Promise} from 'es6-promise';
-import md5 from 'blueimp-md5';
+// import md5 from 'blueimp-md5';
 import Cookies from 'cookies-js';
 import Signaler from '../src';
 
@@ -7,15 +7,15 @@ window.fetch = jest.fn();
 
 describe('Signaler (server backed)', () => {
   beforeEach(() => {
-    Cookies.set(md5('featureOne'), 'control');
-    Cookies.set(md5('featureTwo'), 'test');
-    Cookies.set(md5('featureThree'), 'something');
+    Cookies.set('featureOne', 'control');
+    Cookies.set('featureTwo', 'test');
+    Cookies.set('featureThree', 'something');
   });
 
   afterEach(() => {
-    Cookies.expire(md5('featureOne'));
-    Cookies.expire(md5('featureTwo'));
-    Cookies.expire(md5('featureThree'));
+    Cookies.expire('featureOne');
+    Cookies.expire('featureTwo');
+    Cookies.expire('featureThree');
     window.fetch.mockClear();
   });
 
@@ -25,7 +25,7 @@ describe('Signaler (server backed)', () => {
 
   describe('setup', () => {
     it('sets url', () => {
-      var signal = new Signaler('myUrl');
+      const signal = new Signaler('myUrl');
       expect(signal.featureFlags).toBeInstanceOf(Function);
       expect(signal.featureFlagFromServer).toBeInstanceOf(Function);
       expect(signal.setFeatureFlag).toBeInstanceOf(Function);
@@ -94,7 +94,7 @@ describe('Signaler (server backed)', () => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
             expect(data).toEqual(flagValue);
 
-            const cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(`feature_${featureName}`);
             expect(cookieVal).toEqual(flagValue);
           });
         });
@@ -117,7 +117,7 @@ describe('Signaler (server backed)', () => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
             expect(data).toEqual(flagValue);
 
-            const cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(`feature_${featureName}`);
             expect(cookieVal).toEqual(flagValue);
           });
         });
@@ -138,7 +138,7 @@ describe('Signaler (server backed)', () => {
             expect(mockFetch).toHaveBeenCalledWith(`myUrl/${featureName}.json`);
             expect(data).toEqual(flagValue);
 
-            const cookieVal = Cookies.get(md5(featureName));
+            const cookieVal = Cookies.get(`feature_${featureName}`);
             expect(cookieVal).toEqual(flagValue);
           });
         });
@@ -153,15 +153,19 @@ describe('Signaler (server backed)', () => {
       jest.restoreAllMocks();
     });
 
+    beforeEach(() => {
+      cookieSpy.mockClear();
+    })
+
     it('sets the cookie with the options passed in', () => {
       const signal = new Signaler('myUrl');
       const featureName = 'newFeature';
       const featureVal = 'myVal';
 
       signal.setFeatureFlag(featureName, featureVal);
-      const cookieVal = Cookies.get(md5(featureName));
+      const cookieVal = Cookies.get(`feature_${featureName}`);
 
-      expect(cookieSpy).toHaveBeenCalledWith(md5(featureName), featureVal, {});
+      expect(cookieSpy).toHaveBeenCalledWith(`feature_${featureName}`, featureVal, {});
       expect(cookieVal).toEqual('myVal');
     });
 
@@ -175,8 +179,8 @@ describe('Signaler (server backed)', () => {
       const featureName = 'newFeature';
       const featureVal = 'myVal';
       signal.setFeatureFlag(featureName, featureVal, {domain: 'domain'});
-      const cookieVal = Cookies.get(md5(featureName));
-      expect(cookieSpy).toHaveBeenCalledWith(md5(featureName), featureVal, {
+      const cookieVal = Cookies.get(`feature_${featureName}`);
+      expect(cookieSpy).toHaveBeenCalledWith(`feature_${featureName}`, featureVal, {
         path: '/secret',
         domain: 'domain'
       });
