@@ -28,15 +28,15 @@ const features = {
 
 describe('Signaler (client backed)', () => {
   beforeEach(() => {
-    Cookies.set('featureOne', 'control');
-    Cookies.set('featureTwo', 'test');
-    Cookies.set('featureThree', 'something');
+    Cookies.set('feature_featureOne', 'control');
+    Cookies.set('feature_featureTwo', 'test');
+    Cookies.set('feature_featureThree', 'something');
   });
 
   afterEach(() => {
-    Cookies.expire('featureOne');
-    Cookies.expire('featureTwo');
-    Cookies.expire('featureThree');
+    Cookies.expire('feature_featureOne');
+    Cookies.expire('feature_featureTwo');
+    Cookies.expire('feature_featureThree');
   });
 
   describe('setup', () => {

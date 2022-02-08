@@ -23,7 +23,7 @@ const featureFlagFromCookie = featureName => {
     Cookies.set(`feature_${featureName}`, cookieValue);
     Cookies.expire(md5(featureName));
   } else {
-    cookieValue = Cookies.get(featureName);
+    cookieValue = Cookies.get(`feature_${featureName}`);
   }
   return cookieValue;
 }
