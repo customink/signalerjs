@@ -90,6 +90,6 @@ One important thing to note is that the cookie names are MD5 hashed values of th
 
 ```js
 const signal = new Signaler(features);
-g
+
 signal.setFeatureFlag('featureOne', 'test', {domain: '.example.com'});
 ```
