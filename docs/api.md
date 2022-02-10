@@ -9,13 +9,13 @@ After a `Signalerjs` object created with either with [server-side](./server_requ
 `Signalerjs` can flag users into feature test groups by sampling on the client side. To configure this way, a string of the path to the primary JSON endpoint is the first argument of the `Signalerjs` function and an optional [configuration](./configuration.md) object is the second. [More details](./server_requirements.md)
 
 ```js
-var primaryEndpoint = '/myUrl';
-var config = {
+const primaryEndpoint = '/myUrl';
+const config = {
   cookieDefaults: {
     path: '/'
   }
 };
-var signal = new Signaler(primaryEndpoint, config);
+const signal = new Signaler(primaryEndpoint, config);
 ```
 
 ### Client-side sampling
@@ -23,7 +23,7 @@ var signal = new Signaler(primaryEndpoint, config);
 `Signalerjs` can flag users into feature test groups by sampling on the client side. To configure this way, a features object is the first argument of the `Signalerjs` function and an optional [configuration](./configuration.md) object is the second. [More details](./feature_definition.md)
 
 ```js
-var features = {
+const features = {
   featureOne: {
     flags: ['test', 'control'],
     expires: 30
@@ -33,12 +33,12 @@ var features = {
     expires: 10
   }
 };
-var config = {
+const config = {
   cookieDefaults: {
     path: '/'
   }
 };
-var signal = new Signaler(features, config);
+const signal = new Signaler(features, config);
 ```
 
 ## featureFlags
@@ -46,7 +46,7 @@ var signal = new Signaler(features, config);
 Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing an object with all the feature flags that the user has been sampled into. Each key in the object is the name of a feature, and each value is the feature flag value. If the value is undefined, the user has not been flagged into a group for that feature.
 
 ```js
-var signal = new Signaler(features);
+const signal = new Signaler(features);
 
 signal.featureFlags().then(function (flags) {
   // flags =>
@@ -60,10 +60,20 @@ signal.featureFlags().then(function (flags) {
 
 ## featureFlag
 
-Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing the flag value a user has for a given feature. If the user is not flagged into a test group for that feature, they are sampled into one at this time and the value is stored to a cookie and returned.
+Returns the flag value a user has for a given test. If the user is not flagged into a test group for that feature, they are sampled into one at this time and the value is stored to a cookie and returned.
 
 ```js
 var signal = new Signaler(features);
+
+const flag = signal.featureFlag('featureOne');
+```
+
+## featureFlagFromServer
+
+Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing the flag value a user has for a given feature if you are requesting. If the user is not flagged into a test group for that feature, they are sampled into one at this time and the value is stored to a cookie and returned.
+
+```js
+const signal = new Signaler(features);
 
 signal.featureFlag('featureOne').then(function (flag) {
   // flag => 'test'
@@ -79,7 +89,7 @@ This sets the feature flag in a cookie. Since `featureFlag` handles flagging use
 One important thing to note is that the cookie names are MD5 hashed values of the feature names. This is to obscure details from users.
 
 ```js
-var signal = new Signaler(features);
+const signal = new Signaler(features);
 
 signal.setFeatureFlag('featureOne', 'test', {domain: '.example.com'});
 ```

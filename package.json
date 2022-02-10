@@ -1,6 +1,6 @@
 {
   "name": "signalerjs",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.min.js",
   "scripts": {
