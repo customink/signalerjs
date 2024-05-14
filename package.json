@@ -1,12 +1,13 @@
 {
-  "name": "signalerjs",
+  "name": "@customink/signalerjs",
   "version": "1.0.0",
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.min.js",
   "scripts": {
     "build": "webpack --mode production",
-    "test": "jest",
-    "lint": "npx eslint ./src ./test"
+    "lint": "npx eslint ./src ./test",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
