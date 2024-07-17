@@ -1,6 +1,6 @@
 {
   "name": "@customink/signalerjs",
-  "version": "1.0.0",
+  "version": "1.0.1-canary.0",
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.min.js",
   "scripts": {
