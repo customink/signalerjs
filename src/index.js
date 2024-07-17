@@ -41,7 +41,7 @@ const cookieOptionsFromExpires = expires => {
 
 export default function Signaler(urlOrFeatures, config = {}) {
   const transformCookieOptions = config.transformCookieOptions || (data => data);
-  Cookies.defaults = config.cookieDefaults || cookieDefaults;
+  Cookies.defaults = {...cookieDefaults, ...config.cookieDefaults};
 
   const featureFlags = () => {
     switch (typeof urlOrFeatures) {
@@ -61,7 +61,7 @@ export default function Signaler(urlOrFeatures, config = {}) {
     const cookieValue = featureFlagFromCookie(featureName);
     if(cookieValue) {
       return cookieValue;
-    } else { 
+    } else {
       const feature = urlOrFeatures[featureName];
       const flag = sample(feature.flags);
       const cookieOpts = cookieOptionsFromExpires(feature.expires);
