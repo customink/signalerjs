@@ -1,7 +1,7 @@
 export function defaultDomain(hostname) {
   const hostArray = hostname.split('.');
   return hostArray.length > 2
-    ? `.${hostArray.slice(1).join('.')}`
+    ? `.${hostArray.slice(hostArray.length-2).join('.')}`
     : `.${hostname}`;
 }
 
