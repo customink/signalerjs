@@ -3,6 +3,12 @@
   "version": "1.2.0",
   "description": "JavaScript A/B testing feature flag library",
   "main": "dist/signalerjs.min.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "build": "webpack --mode production",
     "lint": "npx eslint ./src ./test",
