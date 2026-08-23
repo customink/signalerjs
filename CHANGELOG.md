@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-08-23
+
+### Changed
+
+- Upgraded Node from 18 to 24 (18 reached EOL 2025-04-30)
+- Repo ownership (CODEOWNERS + OpsLevel catalog) moved to `product-pages`
+- `dist/` is no longer committed to git; it's built fresh by `prepublishOnly` on every publish
+- Releases now publish automatically via GitHub Actions on tag push instead of a manual local `npm publish`
+
+### Added
+
+- CI now runs lint + tests on every pull request
+
 ## [1.2.0] - 2024-07-18
 
 ### Changed
