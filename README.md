@@ -4,6 +4,8 @@
 
 # Signalerjs
 
+[![Overall](https://img.shields.io/endpoint?style=flat&url=https://app.opslevel.com/api/service_level/r8xIFNkJ1ve-qpY15sTrcj2YPTIF3298jgr5mosxmmU)](https://app.opslevel.com/services/signalerjs/maturity-report)
+
 `Signalerjs` is an [AB testing](https://en.wikipedia.org/wiki/A/B_testing) library. It provides a JavaScript interface to sample users into test groups and specify different logic depending on the test group in which a user has been placed. We will refer to each test as a "feature" and the different test groups per "feature" as "feature flags" (hence the name "Signaler").
 
 ## Installation
